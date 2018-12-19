@@ -1,0 +1,16 @@
+version: '2'
+networks:
+  proxy: 
+    external: true
+services:
+  reverse-proxy:
+    image: traefik # The official Traefik docker image
+    command: --docker # Tells Traefik to listen to docker
+    ports:
+      - "80:80"     # The HTTP port
+      - "443:443"     # The HTTPS port
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock # So that Traefik can listen to the Docker events
+      - ./traefik-persistence:/etc/traefik
+    networks:
+      - proxy
